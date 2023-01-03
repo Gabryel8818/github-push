@@ -1,0 +1,17 @@
+# action.yml
+name: 'github push'
+description: 'Github action to manage k8s'
+author: gabryel8818 <gabriel_melo88@hotmail.com>
+branding:
+  icon: terminal
+  color: black
+inputs:
+  args:
+    description: 'push your github commits'
+    required: false
+    default: 'version'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.args }}

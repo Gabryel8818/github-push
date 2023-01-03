@@ -1,0 +1,29 @@
+name: testando 
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  teste:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        id: checkout_code
+        uses: actions/checkout@v3
+
+      - name: Set image
+        run: |
+          echo "TESTE: ${{ github.sha }}" > README.md
+      - name: commit
+        run: |
+          git config --local user.email "argocd@example"
+          git config --local user.name "argocd-example"
+          git commit -am "Changing image tag to ${{ github.sha }}"
+
+      - name: push local
+        uses: ./ # Uses an action in the root directory
+        id: push_local
+        env:
+          git_token: ${{ secrets.TOKEN_GIT }}
+          branch: ${{ github.ref }}
