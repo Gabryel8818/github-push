@@ -1,8 +1,5 @@
 name: testando 
-on:
-  push:
-    branches:
-      - "pull_request"
+on: ["pull_request"]
 
 jobs:
   teste:
@@ -21,9 +18,16 @@ jobs:
           git config --local user.name "argocd-example"
           git commit -am "Changing image tag to ${{ github.sha }}"
 
-      - name: push local
-        uses: ./ # Uses an action in the root directory
-        id: push_local
-        env:
-          git_token: ${{ secrets.TOKEN_GIT }}
-          branch: ${{ github.ref }}
+      - name: push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN_GIT }}
+          branch: ${{ github.head_ref }}
+          force: true
+
+      # - name: push local
+      #   uses: ./ # Uses an action in the root directory
+      #   id: push_local
+      #   env:
+      #     git_token: ${{ secrets.TOKEN_GIT }}
+      #     branch: ${{ github.ref }}
